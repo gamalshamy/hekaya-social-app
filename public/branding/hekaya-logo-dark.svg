@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 190" role="img" aria-labelledby="title desc">
+  <title id="title">Hekaya</title>
+  <desc id="desc">Hekaya wordmark with the redesigned H speech-bubble symbol.</desc>
+  <g transform="translate(18 8) scale(0.255)">
+
+  <g>
+    <rect x="45" y="39" width="146" height="585" rx="73" fill="#FFFFFF"/>
+    <rect x="457" y="39" width="146" height="585" rx="73" fill="#FFFFFF"/>
+    <path d="M207 184
+             H448
+             C507.6 184 556 232.4 556 292
+             V356
+             C556 415.6 507.6 464 448 464
+             H294
+             L234 513
+             V480
+             C234 471.2 226.8 464 218 464
+             H207
+             C147.4 464 99 415.6 99 356
+             V292
+             C99 232.4 147.4 184 207 184 Z"
+          fill="#2563EB" stroke="#111A17" stroke-width="35"
+          stroke-linejoin="round"/>
+    <circle cx="244" cy="324" r="26.5" fill="#FFFFFF"/>
+    <circle cx="324" cy="324" r="26.5" fill="#FFFFFF"/>
+    <circle cx="404" cy="324" r="26.5" fill="#FFFFFF"/>
+  </g>
+
+  </g>
+  <text x="205" y="112" fill="#FFFFFF" font-family="Sora, Manrope, Arial, sans-serif"
+        font-size="76" font-weight="650" letter-spacing="-3.2">Hekaya</text>
+  <text x="209" y="151" fill="#C7D2D0" font-family="Sora, Manrope, Arial, sans-serif"
+        font-size="19" font-weight="450" letter-spacing="1.1">EVERY STORY MATTERS.</text>
+</svg>
