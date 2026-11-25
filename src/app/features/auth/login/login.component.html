@@ -1,1 +1,126 @@
-<p>login works!</p>
+<div
+    class="overflow-hidden px-4 py-8 sm:px-6 sm:py-8 mx-auto flex min-h-[calc(100vh-4rem)] w-full max-w-6xl items-center justify-center">
+
+    <div
+        class="grid w-full overflow-hidden rounded-3xl border border-border bg-surface shadow-[var(--shadow-card)] lg:grid-cols-[0.85fr_1.15fr]">
+
+        <app-auth-showcase [badgeText]="'Welcome back to hekaya'"></app-auth-showcase>
+
+        <!-- Signin Form -->
+        <section class="flex min-w-0 items-center p-5 sm:p-8 md:p-10 xl:p-12">
+
+            <div class="mx-auto w-full max-w-lg">
+
+                <!-- Mobile Logo -->
+                <a routerLink="/" class="mx-auto mb-8 block w-40 transition-opacity hover:opacity-80 sm:w-44 lg:hidden">
+                    <img src="/branding/hekaya-logo-light.svg" alt="Hekaya" class="h-auto w-full dark:hidden" />
+                    <img src="/branding/hekaya-logo-dark.svg" alt="Hekaya" class="hidden h-auto w-full dark:block" />
+                </a>
+
+                <header class="mb-8 text-center">
+                    <h2 class="font-heading text-3xl font-bold tracking-tight text-text-primary sm:text-4xl">
+                        Welcome
+                        <span class="bg-linear-to-r from-brand-500 to-brand-700 bg-clip-text text-transparent">
+                            back
+                        </span>
+                    </h2>
+                    <div class="mt-6 h-px w-full bg-linear-to-r from-border via-border to-transparent"></div>
+                </header>
+
+                @if (apiError()) {
+                <!-- <app-auth-error-alert [message]="'Sign in failed:'" [title]="apiError()!"></app-auth-error-alert> -->
+                <app-auth-error-alert [title]="'Sign in failed:'"
+                    [message]="'incorrect email or password'"></app-auth-error-alert>
+                }
+
+                @if (success()) {
+                <app-success [message]="'Welcome Back!'"></app-success>
+                }
+
+                <form [formGroup]="signinForm" (ngSubmit)="onSubmit()" novalidate class="space-y-4 sm:space-y-5">
+
+                    <!-- Email or Username -->
+                    <div>
+                        <label for="signin-email" class="mb-1.5 block text-sm font-medium text-text-primary">
+                            Email or Username
+                        </label>
+
+                        <input id="signin-email" type="text" formControlName="email" autocomplete="username"
+                            placeholder="gamal@example.com"
+                            class="w-full rounded-[var(--radius-button)] border bg-surface-secondary px-3.5 py-2.5 text-sm text-text-primary outline-none transition placeholder:text-text-muted focus:ring-2 focus:ring-primary/20"
+                            [class]="isInvalid('email') ? 'border-danger focus:border-danger' : 'border-border focus:border-primary'" />
+
+                        @if (getErrorText('email'); as error) {
+                        <p id="signin-email-error" class="mt-1.5 text-xs text-danger">{{ error }}</p>
+                        }
+                    </div>
+
+                    <!-- Password -->
+                    <div>
+                        <label for="signin-password" class="mb-1.5 block text-sm font-medium text-text-primary">
+                            Password
+                        </label>
+
+                        <div class="relative">
+                            <input id="signin-password" [type]="showPassword() ? 'text' : 'password'"
+                                formControlName="password" autocomplete="current-password" placeholder="Ex@12345"
+                                class="w-full rounded-[var(--radius-button)] border bg-surface-secondary py-2.5 pe-10 ps-3.5 text-sm text-text-primary outline-none transition placeholder:text-text-muted focus:ring-2 focus:ring-primary/20"
+                                [class]="isInvalid('password') ? 'border-danger focus:border-danger' : 'border-border focus:border-primary'" />
+
+                            <button type="button" (click)="togglePasswordVisibility()"
+                                class="absolute inset-y-0 end-0 flex items-center pe-3 text-text-secondary transition hover:text-primary">
+                                @if (showPassword()) {
+                                <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M3 3l18 18" />
+                                </svg>
+                                } @else {
+                                <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                    <circle cx="12" cy="12" r="3" stroke-width="2" />
+                                </svg>
+                                }
+                            </button>
+                        </div>
+
+                        @if (getErrorText('password'); as error) {
+                        <p id="signin-password-error" class="mt-1.5 text-xs text-danger">{{ error }}</p>
+                        }
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button type="submit" [disabled]="isSubmitting()" (click)="onButtonClick()"
+                        class="inline-flex w-full items-center justify-center gap-2 rounded-[var(--radius-button)] bg-primary px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-primary/20 transition-all duration-200 hover:-translate-y-0.5 hover:bg-primary-hover hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-primary/25 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:translate-y-0">
+                        @if (isSubmitting()) {
+                        <svg class="h-5 w-5 animate-spin" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" />
+                            <path class="opacity-75" fill="currentColor"
+                                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                        </svg>
+
+                        <span>Signing in...</span>
+                        } @else {
+                        <span>Sign In</span>
+                        }
+                    </button>
+                </form>
+
+                <footer class="mt-6 border-t border-border pt-5 text-center text-sm text-text-secondary">
+                    Don't have an account?
+
+                    <a routerLink="/register" (click)="onButtonClick()"
+                        class="ms-1 font-semibold text-primary transition hover:text-primary-hover hover:underline">
+                        Create account
+                    </a>
+                </footer>
+
+                <!-- Mobile Copyright -->
+                <p class="mt-8 text-center text-xs text-text-muted lg:hidden">
+                    &copy; 2026 Hekaya. All rights reserved.
+                </p>
+
+            </div>
+        </section>
+    </div>
+</div>

@@ -1,0 +1,81 @@
+<aside
+    class="relative hidden overflow-hidden bg-brand-900 p-10 text-white lg:flex lg:flex-col lg:justify-between xl:p-12">
+
+    <div class="pointer-events-none absolute -right-32 -top-32 h-96 w-96 rounded-full border border-white/10">
+    </div>
+    <div class="pointer-events-none absolute -right-16 -top-16 h-64 w-64 rounded-full border border-white/10">
+    </div>
+
+    <!-- Logo -->
+    <a routerLink="/" class="block w-[75%] m-auto">
+        <img src="/branding/hekaya-logo-dark.svg" alt="Hekaya" class="w-full" />
+    </a>
+
+    <div class="my-8">
+        <span
+            class="mb-2 inline-flex items-center gap-2 rounded-full uppercase border border-white/15 bg-white/10 px-4 py-2 text-xs font-medium tracking-wide text-blue-100 backdrop-blur-md">
+            <span class="h-2 w-2 rounded-full bg-blue-300"></span>
+            {{ badgeText() }}
+        </span>
+
+        <h1 class="font-heading text-5xl font-bold leading-tight text-[#FFD166]">
+            A place for every
+            <span class="text-blue-300">story.</span>
+        </h1>
+
+        <p class="mt-2 max-w-sm text-sm leading-7 text-blue-100/75 xl:text-base">
+            Connect with people, share your moments, and discover conversations
+            that make every day more meaningful.
+        </p>
+
+        <ul class="mt-5 space-y-3">
+            <li class="flex items-center gap-4">
+                <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white/10 text-blue-200">
+                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
+                            d="M7 8h10M7 12h6m-8 8 3.5-3H17a4 4 0 0 0 4-4V7a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v10a3 3 0 0 0 2 3Z" />
+                    </svg>
+                </div>
+
+                <div>
+                    <h3 class="text-sm font-semibold text-white">Share your thoughts</h3>
+                    <p class="mt-1 text-xs text-blue-100/60">Make your voice part of the conversation.</p>
+                </div>
+            </li>
+
+            <li class="flex items-center gap-4">
+                <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white/10 text-blue-200">
+                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
+                            d="M16 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2m16 0v-2a4 4 0 0 0-3-3.87M14 3.13a4 4 0 0 1 0 7.75M14 7a4 4 0 1 1-8 0 4 4 0 0 1 8 0Z" />
+                    </svg>
+                </div>
+
+                <div>
+                    <h3 class="text-sm font-semibold text-white">Build connections</h3>
+                    <p class="mt-1 text-xs text-blue-100/60">Meet people who share your interests.</p>
+                </div>
+            </li>
+
+            <li class="flex items-center gap-4">
+                <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white/10 text-blue-200">
+                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
+                            d="M12 3v18m9-9H3m16.24-6.24-14.48 14.48m0-14.48 14.48 14.48" />
+                    </svg>
+                </div>
+
+                <div>
+                    <h3 class="text-sm font-semibold text-white">Discover new stories</h3>
+                    <p class="mt-1 text-xs text-blue-100/60">Explore ideas and different perspectives.</p>
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <div class="flex items-center justify-between border-t border-white/10 pt-4 text-xs text-blue-100/50">
+        <span>&copy; 2026 Hekaya</span>
+        <span>Connect. Share. Inspire.</span>
+    </div>
+
+</aside>

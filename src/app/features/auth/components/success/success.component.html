@@ -1,0 +1,48 @@
+<div class="fixed inset-0 z-[100] grid place-items-center bg-black/40 px-5 backdrop-blur-sm">
+    <div class="success-card relative flex size-64 items-center justify-center">
+        <svg class="absolute inset-0 size-full" viewBox="0 0 240 240" fill="none" aria-hidden="true">
+            <path d="M120 8
+                C130 8 133 17 143 19
+                C153 21 161 13 170 18
+                C179 23 177 34 185 40
+                C193 46 204 44 210 53
+                C216 62 209 72 214 81
+                C219 90 230 94 232 104
+                C234 114 224 121 224 131
+                C224 141 234 148 231 158
+                C228 168 216 170 210 178
+                C204 186 207 198 198 204
+                C189 210 179 203 169 208
+                C159 213 157 225 147 228
+                C137 231 130 222 120 222
+                C110 222 103 231 93 228
+                C83 225 81 213 71 208
+                C61 203 51 210 42 204
+                C33 198 36 186 30 178
+                C24 170 12 168 9 158
+                C6 148 16 141 16 131
+                C16 121 6 114 8 104
+                C10 94 21 90 26 81
+                C31 72 24 62 30 53
+                C36 44 47 46 55 40
+                C63 34 61 23 70 18
+                C79 13 87 21 97 19
+                C107 17 110 8 120 8Z" fill="#16A34A" />
+        </svg>
+
+        <div class="relative z-10 flex flex-col items-center text-center text-white">
+
+            <div
+                class="success-check mb-4 flex size-16 items-center justify-center rounded-full bg-white/20 ring-4 ring-white/10">
+                <svg class="size-9 text-white drop-shadow-xs" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M5 12.5L10 17L19 7" class="hekaya-check-path" />
+                </svg>
+            </div>
+
+            <h3 class="font-heading text-lg font-bold text-white">
+                {{ message() }}
+            </h3>
+        </div>
+    </div>
+</div>
