@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="45 39 558 585" role="img" aria-labelledby="title desc">
-  <title id="title">Hekaya icon for dark backgrounds</title>
-  <desc id="desc">White H pillars with a blue speech bubble and three white dots.</desc>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="38 24 432 466" role="img" aria-labelledby="title desc">
+  <title id="title">Hekaya app icon</title>
+  <desc id="desc">Hekaya white H and blue speech bubble mark with a transparent background for dark mode.</desc>
+  <g transform="translate(6 -3) scale(0.765)">
 
   <g>
     <rect x="45" y="39" width="146" height="585" rx="73" fill="#FFFFFF"/>
@@ -26,4 +27,5 @@
     <circle cx="404" cy="324" r="26.5" fill="#FFFFFF"/>
   </g>
 
+  </g>
 </svg>

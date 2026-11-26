@@ -1,0 +1,62 @@
+<header
+    class="sticky top-0 z-50 -mx-4 mb-6 border border-border bg-app-bg/80 backdrop-blur-xl backdrop-saturate-150 sm:rounded-b-card sm:border-x">
+    <div class="flex items-center justify-between gap-3 px-4 py-3 sm:px-5 sm:py-3.5">
+        <div class="flex min-w-0 items-center gap-3.5">
+
+            <div
+                class="relative flex size-11 shrink-0 items-center justify-center rounded-2xl bg-linear-to-br from-primary-soft to-surface shadow-sm ring-1 ring-border">
+                <img src="/branding/hekaya-icon-dark.svg" alt="Hekaya logo" class="hidden size-6 dark:block">
+                <img src="/branding/hekaya-icon-light.svg" alt="Hekaya logo" class="block size-6 dark:hidden">
+
+                <span class="absolute -end-0.5 -top-0.5 flex size-3">
+                    @if (isLoading()) {
+                    <span
+                        class="absolute inline-flex size-full animate-ping rounded-full bg-warning opacity-70 motion-reduce:animate-none"></span>
+                    <span class="relative inline-flex size-3 rounded-full border-2 border-app-bg bg-warning"></span>
+                    } @else {
+                    <span class="relative inline-flex size-3 rounded-full border-2 border-app-bg bg-success"></span>
+                    }
+                </span>
+            </div>
+
+            <div class="min-w-0">
+                <h1
+                    class="truncate font-heading text-xl leading-tight font-bold tracking-tight text-text-primary sm:text-2xl">
+                    Timeline
+                </h1>
+
+                <div class="mt-0.5 flex min-w-0 items-center gap-2 text-xs text-text-muted">
+                    @if (totalPosts() !== null) {
+                    <span class="truncate tabular-nums">
+                        {{ totalPosts() | number }}
+                        {{ totalPosts() === 1 ? 'post' : 'posts' }}
+                        shared on Hekaya.
+                    </span>
+                    } @else {
+                    <span class="truncate">Catch up on the latest posts</span>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="flex shrink-0 items-center gap-2">
+
+            <button type="button" (click)="onRefresh()" [disabled]="isLoading()"
+                class="group inline-flex size-10 items-center justify-center gap-2 rounded-button border border-border bg-surface text-sm font-medium text-text-secondary shadow-2xs transition-all hover:border-primary/40 hover:bg-primary-soft hover:text-primary focus-visible:ring-4 focus-visible:ring-primary/20 focus-visible:outline-none active:scale-95 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:border-border disabled:hover:bg-surface disabled:hover:text-text-secondary disabled:active:scale-100 sm:w-auto sm:px-4">
+
+                <i class="fa-solid fa-arrows-rotate transition-transform duration-500 group-hover:rotate-180 motion-reduce:transition-none"
+                    [class.animate-spin]="isLoading()"></i>
+                <span class="hidden sm:inline">{{ isLoading() ? 'Refreshing…' : 'Refresh' }}</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Bottom loading bar -->
+    <div class="relative h-px w-full overflow-hidden">
+        @if (isLoading()) {
+        <div class="loading-dashes absolute top-0 bottom-0 left-7 right-7"></div>
+        } @else {
+        <div class="absolute inset-0 bg-linear-to-r from-transparent via-primary/40 to-transparent"></div>
+        }
+    </div>
+</header>

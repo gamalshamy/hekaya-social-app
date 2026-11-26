@@ -1,0 +1,187 @@
+<article class="group relative mb-8 overflow-hidden rounded-2xl border border-border/80 bg-surface shadow-card ">
+    @if (post().isShare) {
+    <div class="flex items-center gap-2 border-b border-primary/10 bg-primary/[0.06] px-5 py-3">
+        <div class="flex size-7 items-center justify-center rounded-lg bg-primary/10 text-primary">
+            <svg class="size-4" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M17 3l4 4-4 4M3 11V9a2 2 0 012-2h16M7 21l-4-4 4-4M21 13v2a2 2 0 01-2 2H3" />
+            </svg>
+        </div>
+
+        <span class="text-xs font-semibold text-primary">
+            Retold post
+        </span>
+
+        <span class="text-xs text-text-muted">
+            shared with the community
+        </span>
+    </div>
+    }
+
+    <header class="flex items-center gap-3 px-5 pb-4 pt-5 sm:px-6">
+        <div class="relative shrink-0">
+            <img [src]="post().user.photo" [alt]="post().user.name.trim()" loading="lazy"
+                class="size-12 rounded-2xl object-cover ring-1 ring-border" />
+        </div>
+
+        <div class="min-w-0 flex-1">
+            <div class="flex flex-wrap items-center gap-2">
+                <h3 class="truncate text-sm font-bold text-text-primary">
+                    {{ post().user.name.trim() }}
+                </h3>
+
+                @if (post().body === 'updated cover photo.' || post().body === 'updated profile picture.') {
+                <div
+                    class=" inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 text-[11px] font-medium transition-colors border-primary/20 bg-primary-soft/65 text-primary">
+                    @if (post().body === 'updated cover photo.') {
+                    <svg class="size-3 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <rect x="3" y="4" width="18" height="16" rx="2" />
+                        <circle cx="8.5" cy="9" r="1.5" />
+                        <path stroke-linecap="round" stroke-linejoin="round" d="m21 15-5-5L5 20" />
+                    </svg>
+                    <span>Updated cover photo</span>
+                    } @else {
+                    <svg class="size-3 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <circle cx="12" cy="8" r="4" />
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 21v-2a7 7 0 0 1 14 0v2" />
+                    </svg>
+                    <span>Updated profile picture</span>
+                    }
+                </div>
+                }@else {
+                <span class="truncate text-xs text-text-muted">&#64;{{ post().user.username}}</span>
+                }
+            </div>
+
+            <div class="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-text-muted">
+                <time [attr.datetime]="post().createdAt" [title]="post().createdAt | date: 'MMM d, y · h:mm a'">
+                    {{ formatPostDate(post().createdAt) }}
+                </time>
+
+                <span class="size-1 rounded-full bg-border"></span>
+
+                <span class="inline-flex items-center gap-1 capitalize">
+                    @if (post().privacy === 'public') {
+                    <svg class="size-3.5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="9" />
+                        <path stroke-linecap="round" d="M3 12h18M12 3a14 14 0 010 18M12 3a14 14 0 000 18" />
+                    </svg>
+                    } @else {
+                    <svg class="size-3.5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M7 11V8a5 5 0 0110 0v3M6 11h12a1 1 0 011 1v8a1 1 0 01-1 1H6a1 1 0 01-1-1v-8a1 1 0 011-1z" />
+                    </svg>
+                    }
+
+                    {{ post().privacy }}
+                </span>
+            </div>
+        </div>
+    </header>
+
+    @if (post().body && post().body !== 'updated cover photo.' && post().body != 'updated profile picture.') {
+    <div class="px-5 sm:px-6">
+        <p dir="auto" class="text-[15px] leading-7 whitespace-pre-line text-text-primary [overflow-wrap:anywhere]">
+            {{ post().body }}
+        </p>
+    </div>
+    }
+
+    @if (post().image) {
+    <figure class="mx-5 mt-5 overflow-hidden rounded-2xl bg-surface-secondary sm:mx-6">
+        <img [src]="post().image" alt="Post image" loading="lazy"
+            class="max-h-[36rem] w-full object-cover transition-transform duration-700 group-hover:scale-[1.015]" />
+    </figure>
+    }
+
+    <!-- Shared post -->
+    @if (post().sharedPost; as shared) {
+    <app-shared-post [shared]="shared"></app-shared-post>
+    }
+
+    <div
+        class="mx-5 mt-5 flex items-center justify-between gap-3 border-b border-border/70 pb-4 text-xs text-text-muted sm:mx-6">
+
+        <div class="flex min-w-0 items-center gap-1.5">
+            <span class="flex size-fit items-center justify-center rounded-full text-danger">
+                <svg class="size-5" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 21s-9-5.7-9-12a5 5 0 019-3 5 5 0 019 3c0 6.3-9 12-9 12Z" />
+                </svg>
+            </span>
+
+            <span class="font-medium tabular-nums">
+                {{ post().likesCount | number }}
+                {{ post().likesCount === 1 ? 'Love' : 'Loves' }}
+            </span>
+        </div>
+
+        <div class="flex shrink-0 items-center gap-3">
+            <span class="tabular-nums">
+                {{ post().commentsCount | number }} comments
+            </span>
+
+            <span class="tabular-nums">
+                {{ post().sharesCount | number }} shares
+            </span>
+        </div>
+    </div>
+
+    <footer class="grid grid-cols-4 gap-1 border-t border-border/70 px-3 py-2.5 sm:px-4">
+        <button type="button" title="Like post"
+            class="group/action flex items-center justify-center gap-2 rounded-xl px-2 py-3 text-xs font-semibold text-text-secondary transition-all duration-200 hover:bg-danger/10 hover:text-danger focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-danger/30">
+
+            <svg class="size-[18px] transition-transform duration-200 group-hover/action:scale-125" fill="none"
+                stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M4.3 6.3a5 5 0 017.1 0l.6.6.6-.6a5 5 0 117.1 7.1L12 21l-7.7-7.6a5 5 0 010-7.1z" />
+            </svg>
+
+            <span>Love</span>
+        </button>
+
+        <button type="button" title="Comment on post"
+            class="group/action flex items-center justify-center gap-2 rounded-xl px-2 py-3 text-xs font-semibold text-text-secondary transition-all duration-200 hover:bg-success/10 hover:text-success focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-success/30">
+
+            <svg class="size-[18px] transition-transform duration-200 group-hover/action:-translate-y-0.5" fill="none"
+                stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M8 10h8M8 14h5m-8 6l3-3h9a3 3 0 003-3V7a3 3 0 00-3-3H7a3 3 0 00-3 3v10a3 3 0 001 3z" />
+            </svg>
+
+            <span>Comment</span>
+        </button>
+
+        <button type="button" title="Share post"
+            class="group/action flex items-center justify-center gap-2 rounded-xl px-2 py-3 text-xs font-semibold text-text-secondary transition-all duration-200 hover:bg-warning/10 hover:text-warning focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-warning/30">
+
+            <svg class="size-[18px] transition-transform duration-500 group-hover/action:rotate-180" fill="none"
+                stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M17 3l4 4-4 4M3 11V9a2 2 0 012-2h16M7 21l-4-4 4-4M21 13v2a2 2 0 01-2 2H3" />
+            </svg>
+
+            <span>Share</span>
+        </button>
+
+        <button type="button" [title]="post().bookmarked ? 'Remove from saved' : 'Save post'"
+            class="group/action flex items-center justify-center gap-2 rounded-xl px-2 py-3 text-xs font-semibold text-text-secondary transition-all duration-200 hover:bg-primary/10 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/30"
+            [class.bg-primary/10]="post().bookmarked" [class.text-primary]="post().bookmarked">
+
+            <svg class="size-[18px] transition-transform duration-200 group-hover/action:-translate-y-0.5"
+                [attr.fill]="post().bookmarked ? 'currentColor' : 'none'" stroke="currentColor" stroke-width="1.8"
+                viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M6 4.75A1.75 1.75 0 017.75 3h8.5A1.75 1.75 0 0118 4.75V21l-6-3.5L6 21V4.75Z" />
+            </svg>
+
+            <span>{{ post().bookmarked ? 'Saved' : 'Save' }}</span>
+        </button>
+
+    </footer>
+
+
+    <!-- Top Comment Preview -->
+    @if (post().topComment; as comment) {
+    <app-top-comment [comment]="comment" [commentsCount]="post().commentsCount"></app-top-comment>
+    }
+</article>

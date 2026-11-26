@@ -8,7 +8,7 @@ export const MAIN_ROUTES: Routes = [
     },
     {
         path: 'timeline',
-        loadComponent: () => import('./timeline/timeline.component').then((c) => c.TimelineComponent),
+        loadComponent: () => import('./pages/timeline/timeline.component').then((c) => c.TimelineComponent),
         title: 'timeline'
     }
 ]

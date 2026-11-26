@@ -1,0 +1,41 @@
+<section class="mx-auto w-full max-w-2xl px-4 py-6 sm:py-8">
+    <app-timeline-header [isLoading]="isLoading()" [totalPosts]="pagination()?.total ?? null"
+        (refresh)="refreshPosts()"></app-timeline-header>
+
+    <!-- ================= Error ================= -->
+    <app-create-post (postCreated)="loadPosts()"></app-create-post>
+
+
+    <!-- ================= Error ================= -->
+    @if (error(); as message) {
+    <app-post-error [message]="message" [isRetrying]="isLoading()" (retry)="refreshPosts()"></app-post-error>
+    }
+
+    <!-- ================= Loading Skeleton ================= -->
+    @if (isLoading() && posts().length === 0) {
+    <app-skeleton-post></app-skeleton-post>
+    }
+
+    <!-- ================= Empty State ================= -->
+    @else if (posts().length === 0 && !error()) {
+    <app-empty-state></app-empty-state>
+    }
+
+    <!-- ================= Posts ================= -->
+    @else {
+    <div class="space-y-4">
+        @for (post of posts(); track post._id) {
+        <app-post-card [post]="post"></app-post-card>
+        }
+    </div>
+
+    <!-- Footer info -->
+    <!-- @if (pagination(); as p) {
+    <p class="mt-8 text-center text-xs text-text-muted">
+        Showing {{ posts().length | number }} of {{ p.total | number }} posts
+        @if (p.nextPage) { · more available }
+    </p>
+    } -->
+
+    }
+</section>

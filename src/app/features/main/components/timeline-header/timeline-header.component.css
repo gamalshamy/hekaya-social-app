@@ -1,0 +1,23 @@
+.loading-dashes {
+    background-image: repeating-linear-gradient(90deg,
+            var(--primary) 0 12px,
+            transparent 12px 20px);
+    background-size: 20px 100%;
+    animation: dash-move 0.2s linear infinite;
+}
+
+@keyframes dash-move {
+    from {
+        background-position-x: 0;
+    }
+
+    to {
+        background-position-x: 20px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .loading-dashes {
+        animation: none;
+    }
+}

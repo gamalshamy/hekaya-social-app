@@ -1,0 +1,207 @@
+<section class="group mb-8 overflow-hidden rounded-2xl border border-border bg-surface shadow-card">
+
+    <header class="flex items-center flex-wrap justify-between border-b border-border/70 px-5 py-3 sm:px-6">
+        <div class="flex items-center gap-3">
+            <div class="flex size-10 items-center justify-center rounded-xl bg-primary-soft text-primary">
+                <i class="fa-solid fa-pen-to-square text-base"></i>
+            </div>
+
+            <h2 class="font-heading text-base font-bold tracking-tight text-text-primary">
+                Create a post
+            </h2>
+        </div>
+
+        <div class="relative inline-flex items-center">
+            <span
+                class="pointer-events-none absolute inset-s-2.5 flex size-5 items-center justify-center rounded-full bg-primary/15 text-primary">
+                <i class="fa-solid fa-earth-americas text-[11px]"></i>
+            </span>
+
+            <select title="Story privacy"
+                class="cursor-pointer appearance-none rounded-full border border-border/70 bg-surface-secondary/60 py-1.5 ps-9 pe-2 text-xs font-medium text-text-secondary transition-all duration-200 hover:border-border hover:bg-surface-secondary hover:text-text-primary focus:border-none focus:outline-none">
+                <option value="public" selected>Public</option>
+                <option value="" disabled>Coming soon...</option>
+            </select>
+
+        </div>
+    </header>
+
+
+    <div class="p-5 sm:p-6">
+        <div
+            class="relative rounded-2xl border border-border/70 bg-linear-to-br from-surface-secondary/50 via-surface-secondary/20 to-surface p-4 ps-5 transition-colors duration-200 focus-within:border-primary/40">
+            <textarea [ngModel]=" body()" (ngModelChange)="onBodyChange($event)" [ngModelOptions]="{ standalone: true }"
+                [maxLength]="5000" placeholder="What's on your mind?" rows="1" [style.outline]="'none'"
+                class="w-full resize-y border-0 bg-transparent p-0 text-[15px] leading-7 text-text-primary outline-none placeholder:text-text-muted focus:ring-0 focus:border-0 focus:outline-0 sm:min-h-[7rem]">
+                </textarea>
+        </div>
+
+
+        <!-- Image Preview -->
+        @if (imagePreview(); as preview) {
+
+        <div class="relative mt-5 overflow-hidden rounded-2xl border border-border bg-surface-secondary">
+
+            <div
+                class="absolute inset-x-0 top-0 z-10 flex items-center justify-between bg-linear-to-b from-black/55 to-transparent px-4 pb-10 pt-4">
+
+                <div class="flex items-center gap-2 text-white">
+                    <div class="flex size-8 items-center justify-center rounded-lg bg-white/15 backdrop-blur-md">
+                        <i class="fa-solid fa-image text-sm"></i>
+                    </div>
+
+                    <div class="min-w-0">
+                        <p class="text-xs font-semibold">Image preview</p>
+                        <p class="max-w-48 truncate text-[10px] text-white/75">
+                            {{ selectedImage()?.name }}
+                        </p>
+                    </div>
+                </div>
+
+                <button type="button" (click)="removeImage()" title="Remove image"
+                    class="flex size-9 shrink-0 items-center justify-center rounded-xl border border-white/20 bg-black/25 text-white backdrop-blur-md transition-all hover:rotate-90 hover:bg-danger">
+
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <img [src]="preview" alt="Selected post image preview" class="max-h-[28rem] w-full object-contain" />
+
+            <div class="absolute inset-x-0 bottom-0 bg-linear-to-t from-black/50 to-transparent px-4 pb-3 pt-10">
+                <div class="flex items-center gap-2 text-[11px] font-medium text-white/90">
+                    <i class="fa-solid fa-circle-check text-success"></i>
+                    Image attached successfully
+                </div>
+            </div>
+        </div>
+        }
+
+
+        <!-- Image Validation Error -->
+        @if (imageError(); as error) {
+        <div
+            class="mt-4 flex items-start gap-3 rounded-xl border border-danger/20 bg-danger/10 p-3.5 text-sm text-danger">
+            <i class="fa-solid fa-circle-exclamation mt-0.5"></i>
+            <span>{{ error }}</span>
+        </div>
+        }
+
+
+        <!-- API Error -->
+        @if (createPostError(); as error) {
+        <div
+            class="mt-4 flex items-start gap-3 rounded-xl border border-danger/20 bg-danger/10 p-3.5 text-sm text-danger">
+            <i class="fa-solid fa-circle-exclamation mt-0.5"></i>
+            <span>{{ error }}</span>
+        </div>
+        }
+
+
+        <!-- Upload Area -->
+        @if (!imagePreview()) {
+        <!-- <label
+            class="group/upload relative mt-5 flex cursor-pointer flex-col items-center justify-center overflow-hidden rounded-2xl border-2 border-dashed px-5 py-8 text-center transition-all duration-300"
+            [class.border-primary]="isDragging()" [class.bg-primary-soft]="isDragging()"
+            [class.border-border]="!isDragging()" [class.hover:border-primary/50]="!isDragging()"
+            [class.hover:bg-primary-soft/40]="!isDragging()" (dragover)="onDragOver($event)"
+            (dragleave)="onDragLeave($event)" (drop)="onDrop($event)">
+
+            <div
+                class="absolute inset-0 bg-linear-to-br from-primary/[0.025] to-transparent opacity-0 transition-opacity group-hover/upload:opacity-100">
+            </div>
+
+            <div
+                class="relative flex size-12 items-center justify-center rounded-2xl bg-primary-soft text-primary shadow-sm transition-transform duration-300 group-hover/upload:-translate-y-1">
+                <i class="fa-solid fa-cloud-arrow-up text-xl"></i>
+            </div>
+
+            <div class="relative mt-3">
+                <p class="text-sm font-semibold text-text-primary">
+                    {{ isDragging() ? 'Drop your image here' : 'Add a photo to your story' }}
+                </p>
+
+                <p class="mt-1 text-xs text-text-muted">
+                    Drag and drop or
+                    <span class="font-semibold text-primary">browse files</span>
+                </p>
+            </div>
+
+            <div class="relative mt-4 flex flex-wrap items-center justify-center gap-2">
+                <span class="rounded-md bg-surface-secondary px-2 py-1 text-[10px] font-semibold text-text-muted">
+                    JPG
+                </span>
+                <span class="rounded-md bg-surface-secondary px-2 py-1 text-[10px] font-semibold text-text-muted">
+                    PNG
+                </span>
+                <span class="rounded-md bg-surface-secondary px-2 py-1 text-[10px] font-semibold text-text-muted">
+                    WEBP
+                </span>
+                <span class="rounded-md bg-surface-secondary px-2 py-1 text-[10px] font-semibold text-text-muted">
+                    GIF
+                </span>
+                <span class="text-[10px] text-text-muted">Up to 5 MB</span>
+            </div>
+
+            <input type="file" accept="image/jpeg,image/png,image/webp,image/gif" class="hidden"
+                (change)="onImageSelected($event)" />
+        </label> -->
+        }
+
+
+        <!-- Composer Actions -->
+        <div
+            class="mt-5 flex flex-col flex-wrap items-center justify-between gap-3 border-t border-border/70 pt-5 sm:flex-row">
+
+            <div class="flex flex-wrap items-center gap-2 me-auto">
+                <label
+                    class="inline-flex cursor-pointer items-center gap-2 rounded-xl border border-transparent px-3 py-2.5 text-xs font-semibold text-text-secondary transition-all hover:border-success/20 hover:bg-success/10 hover:text-success">
+
+                    <i class="fa-regular fa-image text-base"></i>
+                    <span>{{ imagePreview() ? 'Change photo' : 'Photo' }}</span>
+
+                    <input type="file" accept="image/jpeg,image/png,image/webp,image/gif" class="hidden"
+                        (change)="onImageSelected($event)" />
+                </label>
+
+                <div class="inline-flex items-center gap-2 rounded-xl px-3 py-2.5 text-xs font-semibold text-text-muted"
+                    title="Mention feature coming soon">
+
+                    <i class="fa-solid fa-at text-base"></i>
+                    <span>Mention</span>
+                    <span
+                        class="rounded bg-surface-secondary px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wide">
+                        Soon
+                    </span>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-3 w-full sm:w-fit">
+                <div class="flex items-center gap-2" [title]="(characterCount() | number) + ' / 5,000'">
+                    <svg class="size-7 -rotate-90" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                        <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2.5" class="text-border" />
+                        <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                            stroke-dasharray="62.83" [attr.stroke-dashoffset]="62.83 * (1 - characterCount() / 5000)"
+                            class="transition-all duration-300" [class.text-warning]="isBodyNearLimit()"
+                            [class.text-primary]="!isBodyNearLimit()" />
+                    </svg>
+                    <span class=" text-xs tabular-nums transition-colors sm:inline"
+                        [class.text-warning]="isBodyNearLimit()" [class.text-text-muted]="!isBodyNearLimit()">
+                        {{ characterCount() | number }} / 5,000
+                    </span>
+                </div>
+                <!-- Publish -->
+                <button type="button" (click)="submitPost()" [disabled]="!canCreatePost() || isCreatingPost()"
+                    class="flex-1 inline-flex items-center justify-center gap-2 rounded-button bg-primary px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-all hover:bg-primary-hover active:scale-95 disabled:cursor-not-allowed disabled:opacity-50">
+
+                    @if (isCreatingPost()) {
+                    <i class="fa-solid fa-spinner animate-spin"></i>
+                    <span>Publishing...</span>
+                    } @else {
+                    <i class="fa-solid fa-paper-plane"></i>
+                    <span>Publish</span>
+                    }
+                </button>
+            </div>
+        </div>
+    </div>
+</section>
