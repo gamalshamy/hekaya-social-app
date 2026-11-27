@@ -1,4 +1,4 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import { catchError, finalize, Observable, throwError } from 'rxjs';
 import { environment } from '../../../../environments/environment';
@@ -48,12 +48,14 @@ export class PostsService {
     return 'Something went wrong. Please try again.';
   }
 
-  getAllPosts(): Observable<PostsResponse> {
+  getAllPosts(page: number = 1): Observable<PostsResponse> {
     this._isLoadingPosts.set(true);
     this._postsError.set(null);
 
+    const params = new HttpParams().set('page', page);
+
     return this.http
-      .get<PostsResponse>(`${this.apiUrl}/posts`)
+      .get<PostsResponse>(`${this.apiUrl}/posts`, { params })
       .pipe(
         catchError((error: HttpErrorResponse) => {
           this._postsError.set(this.getErrorMessage(error));

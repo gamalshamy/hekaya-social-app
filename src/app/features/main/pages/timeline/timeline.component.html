@@ -23,7 +23,8 @@
 
     <!-- ================= Posts ================= -->
     @else {
-    <div class="space-y-4">
+    <div class="space-y-4" infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="150"
+        [scrollWindow]="true" [infiniteScrollDisabled]="!hasMorePosts() || isLoading()" (scrolled)="loadMorePosts()">
         @for (post of posts(); track post._id) {
         <app-post-card [post]="post" (postShared)="onPostShared($event)" (postDeleted)="onPostDeleted($event)" />
         }
