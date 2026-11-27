@@ -1,3 +1,5 @@
+import { AuthUser } from "./auth-user.interface";
+
 // when register
 export interface SignupRequest {
     name: string;
@@ -21,11 +23,4 @@ export interface SignupResponse {
     };
 }
 
-export interface SignupUser {
-    _id: string;
-    name: string;
-    username: string;
-    email: string;
-    photo: string;
-    cover: string;
-}
+export interface SignupUser extends AuthUser { }
