@@ -18,8 +18,10 @@ export class PostCardComponent implements OnInit, OnDestroy {
   private readonly authService = inject(AuthService);
   private readonly postsService = inject(PostsService);
 
+  readonly actionError = signal<string | null>(null);
+
   readonly isLiking = signal(false);
-  readonly likeError = signal<string | null>(null);
+  // readonly likeError = signal<string | null>(null);
 
   readonly likeState = linkedSignal(() => {
     const post = this.post();
@@ -30,6 +32,11 @@ export class PostCardComponent implements OnInit, OnDestroy {
       likesCount: post.likesCount,
     };
   });
+
+  readonly isBookmarking = signal(false);
+  // readonly bookmarkError = signal<string | null>(null);
+
+  readonly bookmarkState = linkedSignal(() => this.post().bookmarked);
 
   // Current time
   readonly currentTime = signal(Date.now());
@@ -80,7 +87,7 @@ export class PostCardComponent implements OnInit, OnDestroy {
     const userId = this.authService.getCurrentUserId();
 
     if (!userId) {
-      this.likeError.set('Please sign in to like this post.');
+      this.actionError.set('Please sign in to like this post.');
       return;
     }
 
@@ -97,10 +104,10 @@ export class PostCardComponent implements OnInit, OnDestroy {
       ),
     });
 
-    this.likeError.set(null);
+    this.actionError.set(null);
 
     if (!navigator.onLine) {
-      this.likeError.set('You are offline. Your reaction was not saved.');
+      this.actionError.set('You are offline. Your reaction was not saved.');
       return;
     }
 
@@ -119,13 +126,47 @@ export class PostCardComponent implements OnInit, OnDestroy {
       error: (error) => {
         this.likeState.set(previousState);
 
-        this.likeError.set(
+        this.actionError.set(
           error?.error?.message ||
           error?.error?.errors ||
           'Unable to update your reaction. Please try again.',
         );
 
         this.isLiking.set(false);
+      },
+    });
+  }
+
+  toggleBookmark(): void {
+    if (this.isBookmarking()) {
+      return;
+    }
+
+    const post = this.post();
+    const previousState = this.bookmarkState();
+    const nextState = !previousState;
+
+    this.bookmarkState.set(nextState);
+
+    this.actionError.set(null);
+    this.isBookmarking.set(true);
+
+    this.postsService.bookmarkPost(post._id).subscribe({
+      next: (response) => {
+        this.bookmarkState.set(response.data.bookmarked);
+        this.isBookmarking.set(false);
+      },
+
+      error: (error) => {
+        this.bookmarkState.set(previousState);
+
+        this.actionError.set(
+          error?.error?.message ||
+          error?.error?.errors ||
+          'Unable to update bookmark. Please try again.',
+        );
+
+        this.isBookmarking.set(false);
       },
     });
   }
