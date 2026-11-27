@@ -8,6 +8,7 @@ import { CreatePostResponse } from '../models/create-post-response.interface';
 import { LikePostResponse } from '../models/like-post-response.interface';
 import { BookmarkPostResponse } from '../models/bookmark-post-response.interface';
 import { DeletePostResponse } from '../models/delete-post-response.interface';
+import { SharePostResponse } from '../models/share-post-user.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -95,6 +96,13 @@ export class PostsService {
   deletePost(postId: string): Observable<DeletePostResponse> {
     return this.http.delete<DeletePostResponse>(
       `${this.apiUrl}/posts/${postId}`
+    );
+  }
+
+  sharePost(postId: string, body: string): Observable<SharePostResponse> {
+    return this.http.post<SharePostResponse>(
+      `${this.apiUrl}/posts/${postId}/share`,
+      { body },
     );
   }
 }

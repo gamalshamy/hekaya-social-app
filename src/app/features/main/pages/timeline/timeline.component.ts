@@ -62,4 +62,22 @@ export class TimelineComponent implements OnInit {
       };
     });
   }
+
+  onPostShared(sharedPost: Post): void {
+    this.posts.update((currentPosts) => [
+      sharedPost,
+      ...currentPosts.filter((post) => post._id !== sharedPost._id),
+    ]);
+
+    this.pagination.update((current) => {
+      if (!current) {
+        return current;
+      }
+
+      return {
+        ...current,
+        total: current.total + 1,
+      };
+    });
+  }
 }

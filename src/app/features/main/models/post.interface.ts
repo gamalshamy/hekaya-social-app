@@ -28,7 +28,7 @@ export interface PostComment {
 
 export interface SharedPost {
     _id: string;
-    body?: string;
+    body?: string | null;
     image?: string;
     privacy: PostPrivacy;
     user: PostUser;
@@ -45,7 +45,7 @@ export interface SharedPost {
 
 export interface Post {
     _id: string;
-    body?: string;
+    body?: string | null;
     image?: string;
     privacy: PostPrivacy;
     user: PostUser;

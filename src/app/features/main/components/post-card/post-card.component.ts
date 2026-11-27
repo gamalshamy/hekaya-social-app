@@ -5,10 +5,11 @@ import { Post } from '../../models/post.interface';
 import { PostsService } from '../../services/posts.service';
 import { SharedPostComponent } from '../shared-post/shared-post.component';
 import { TopCommentComponent } from '../top-comment/top-comment.component';
+import { ShareDialogComponent } from '../share-dialog/share-dialog.component';
 
 @Component({
   selector: 'app-post-card',
-  imports: [DatePipe, DecimalPipe, TopCommentComponent, SharedPostComponent],
+  imports: [DatePipe, DecimalPipe, TopCommentComponent, SharedPostComponent, ShareDialogComponent],
   templateUrl: './post-card.component.html',
   styleUrl: './post-card.component.css',
 })
@@ -51,6 +52,10 @@ export class PostCardComponent implements OnInit, OnDestroy {
 
     return !!userId && this.post().user._id === userId;
   });
+
+  // share post
+  readonly showShareDialog = signal(false);
+  readonly postShared = output<Post>();
 
   // Current time
   readonly currentTime = signal(Date.now());
@@ -232,5 +237,18 @@ export class PostCardComponent implements OnInit, OnDestroy {
         );
       },
     });
+  }
+
+  openShareDialog(): void {
+    this.showShareDialog.set(true);
+  }
+
+  closeShareDialog(): void {
+    this.showShareDialog.set(false);
+  }
+
+  onPostShared(sharedPost: Post): void {
+    this.postShared.emit(sharedPost);
+    this.showShareDialog.set(false);
   }
 }
