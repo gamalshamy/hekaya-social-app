@@ -1,5 +1,5 @@
 import { DatePipe, DecimalPipe } from '@angular/common';
-import { Component, inject, input, linkedSignal, OnDestroy, OnInit, signal } from '@angular/core';
+import { Component, computed, inject, input, linkedSignal, OnDestroy, OnInit, output, signal } from '@angular/core';
 import { AuthService } from '../../../auth/services/auth.service';
 import { Post } from '../../models/post.interface';
 import { PostsService } from '../../services/posts.service';
@@ -37,6 +37,20 @@ export class PostCardComponent implements OnInit, OnDestroy {
   // readonly bookmarkError = signal<string | null>(null);
 
   readonly bookmarkState = linkedSignal(() => this.post().bookmarked);
+
+  //delete post
+  readonly showPostMenu = signal(false);
+  readonly showDeleteConfirmation = signal(false);
+  readonly isDeleting = signal(false);
+  readonly deleteError = signal<string | null>(null);
+
+  readonly postDeleted = output<string>();
+
+  readonly isPostOwner = computed(() => {
+    const userId = this.authService.getCurrentUserId();
+
+    return !!userId && this.post().user._id === userId;
+  });
 
   // Current time
   readonly currentTime = signal(Date.now());
@@ -167,6 +181,55 @@ export class PostCardComponent implements OnInit, OnDestroy {
         );
 
         this.isBookmarking.set(false);
+      },
+    });
+  }
+
+  // 3 dots [delete post, ....]
+  togglePostMenu(): void {
+    this.showPostMenu.update((value) => !value);
+  }
+
+  openDeleteConfirmation(): void {
+    this.showPostMenu.set(false);
+    this.deleteError.set(null);
+    this.showDeleteConfirmation.set(true);
+  }
+
+  closeDeleteConfirmation(): void {
+    if (this.isDeleting()) {
+      return;
+    }
+
+    this.showDeleteConfirmation.set(false);
+    this.deleteError.set(null);
+  }
+
+  confirmDeletePost(): void {
+    if (this.isDeleting() || !this.isPostOwner()) {
+      return;
+    }
+
+    this.isDeleting.set(true);
+    this.deleteError.set(null);
+
+    this.postsService.deletePost(this.post()._id).subscribe({
+      next: () => {
+        this.isDeleting.set(false);
+        this.showDeleteConfirmation.set(false);
+
+        // Notify Timeline => that the post was deleted
+        this.postDeleted.emit(this.post()._id);
+      },
+
+      error: (error) => {
+        this.isDeleting.set(false);
+
+        this.deleteError.set(
+          error?.error?.message ||
+          error?.error?.errors ||
+          'Unable to delete this post. Please try again.',
+        );
       },
     });
   }

@@ -45,4 +45,21 @@ export class TimelineComponent implements OnInit {
       this.loadPosts();
     }
   }
+
+  onPostDeleted(postId: string): void {
+    this.posts.update((currentPosts) =>
+      currentPosts.filter((post) => post._id !== postId),
+    );
+
+    this.pagination.update((current) => {
+      if (!current) {
+        return current;
+      }
+
+      return {
+        ...current,
+        total: Math.max(0, current.total - 1),
+      };
+    });
+  }
 }

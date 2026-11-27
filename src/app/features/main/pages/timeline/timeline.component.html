@@ -25,7 +25,7 @@
     @else {
     <div class="space-y-4">
         @for (post of posts(); track post._id) {
-        <app-post-card [post]="post"></app-post-card>
+        <app-post-card [post]="post" (postDeleted)="onPostDeleted($event)"></app-post-card>
         }
     </div>
 

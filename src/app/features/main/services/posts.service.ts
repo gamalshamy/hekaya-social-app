@@ -7,6 +7,7 @@ import { PostsResponse } from '../models/posts-response.interface';
 import { CreatePostResponse } from '../models/create-post-response.interface';
 import { LikePostResponse } from '../models/like-post-response.interface';
 import { BookmarkPostResponse } from '../models/bookmark-post-response.interface';
+import { DeletePostResponse } from '../models/delete-post-response.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -88,6 +89,12 @@ export class PostsService {
     return this.http.put<BookmarkPostResponse>(
       `${this.apiUrl}/posts/${postId}/bookmark`,
       null,
+    );
+  }
+
+  deletePost(postId: string): Observable<DeletePostResponse> {
+    return this.http.delete<DeletePostResponse>(
+      `${this.apiUrl}/posts/${postId}`
     );
   }
 }
