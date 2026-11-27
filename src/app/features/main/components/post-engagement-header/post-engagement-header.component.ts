@@ -1,8 +1,6 @@
 import { Component, computed, input, output, signal } from '@angular/core';
 import { PostLikesComponent } from '../post-likes/post-likes.component';
 
-export type EngagementSection = 'loves' | 'comments';
-
 @Component({
   selector: 'app-post-engagement-header',
   imports: [PostLikesComponent],
@@ -11,6 +9,8 @@ export type EngagementSection = 'loves' | 'comments';
 })
 export class PostEngagementHeaderComponent {
   readonly postId = input.required<string>();
+  readonly getTitle = input('comments');
+  title = signal('')
 
   readonly isLiked = input(false);
   readonly likesCount = input(0);
@@ -19,15 +19,18 @@ export class PostEngagementHeaderComponent {
   readonly closed = output<void>();
   readonly likeToggled = output<boolean>();
 
-  readonly activeSection = signal<EngagementSection>('loves');
-
-  readonly title = computed(() =>
-    this.activeSection() === 'loves' ? 'Loves' : 'Comments',
-  );
-
-  selectSection(section: EngagementSection): void {
-    this.activeSection.set(section);
+  ngOnInit(): void {
+    this.title.set(this.getTitle())
   }
+
+  showComments() {
+    this.title.set('comments')
+  }
+
+  showLoves() {
+    this.title.set('loves')
+  }
+
 
   toggleLike(): void {
     this.likeToggled.emit(!this.isLiked());

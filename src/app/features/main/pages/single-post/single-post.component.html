@@ -1,0 +1,52 @@
+<section class="min-h-screen bg-app-bg w-full">
+    @if (isLoading()) {
+    <section class="flex flex-col items-center justify-center gap-3 py-20">
+        <span class="size-9 animate-spin rounded-full border-4 border-primary/20 border-t-primary"></span>
+
+        <p class="text-sm text-text-secondary">
+            Loading post...
+        </p>
+    </section>
+    }
+
+    @else if (error()) {
+    <section
+        class="flex flex-col items-center justify-center gap-4 rounded-2xl border border-border bg-surface px-5 py-12 text-center">
+        <i class="fa-solid fa-circle-exclamation text-4xl text-danger"></i>
+
+        <h2 class="font-semibold text-text-primary">
+            Something went wrong
+        </h2>
+
+        <p class="text-sm text-text-secondary">
+            {{ error() }}
+        </p>
+
+        <button type="button" (click)="loadPost(route.snapshot.paramMap.get('postId')!)"
+            class="rounded-button bg-primary px-5 py-2.5 text-sm font-medium text-white transition hover:bg-primary-hover">
+            Try Again
+        </button>
+    </section>
+    }
+
+    @else if (post(); as currentPost) {
+    <section class="overflow-hidden">
+        <header
+            class="relative flex shrink-0 items-center justify-center rounded-2xl border border-border px-5 py-4 mb-3 bg-surface ">
+            <button type="button" (click)="goBack()"
+                class="absolute left-4 flex size-9 items-center justify-center rounded-full text-text-secondary transition hover:bg-surface-secondary hover:text-text-primary">
+                <i class="fa-solid fa-angles-left text-lg"></i>
+            </button>
+
+            <h2 class="text-lg font-semibold text-text-primary">
+                Post details
+            </h2>
+        </header>
+        <app-post-card [post]="currentPost" />
+
+        <h3 class="text-lg font-semibold text-text-primary text-center">
+            All Comments Coming Soon!
+        </h3>
+    </section>
+    }
+</section>

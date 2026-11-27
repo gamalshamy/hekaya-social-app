@@ -7,10 +7,11 @@ import { PostEngagementHeaderComponent } from '../post-engagement-header/post-en
 import { ShareDialogComponent } from '../share-dialog/share-dialog.component';
 import { SharedPostComponent } from '../shared-post/shared-post.component';
 import { TopCommentComponent } from '../top-comment/top-comment.component';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-post-card',
-  imports: [DatePipe, DecimalPipe, TopCommentComponent, SharedPostComponent, ShareDialogComponent, PostEngagementHeaderComponent],
+  imports: [DatePipe, DecimalPipe, TopCommentComponent, SharedPostComponent, ShareDialogComponent, PostEngagementHeaderComponent, RouterLink],
   templateUrl: './post-card.component.html',
   styleUrl: './post-card.component.css',
 })
@@ -60,6 +61,7 @@ export class PostCardComponent implements OnInit, OnDestroy {
 
   // to show [Loves & Comments]
   readonly showEngagement = signal(false);
+  readonly engagementTitle = signal('');
 
   // Current time
   readonly currentTime = signal(Date.now());
@@ -256,8 +258,9 @@ export class PostCardComponent implements OnInit, OnDestroy {
     this.showShareDialog.set(false);
   }
 
-  openPostEngagement(): void {
+  openPostEngagement(titdfle: string): void {
     this.showEngagement.set(true);
+    this.engagementTitle.set(titdfle)
   }
 
   closePostEngagement(): void {

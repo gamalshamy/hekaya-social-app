@@ -10,6 +10,7 @@ import { BookmarkPostResponse } from '../models/bookmark-post-response.interface
 import { DeletePostResponse } from '../models/delete-post-response.interface';
 import { SharePostResponse } from '../models/share-post-user.interface';
 import { PostLikesResponse } from '../models/post-likes.interface';
+import { SinglePostResponse } from '../models/single-post-response.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -128,6 +129,12 @@ export class PostsService {
           }));
         }),
       );
+  }
+
+  getPostById(postId: string): Observable<SinglePostResponse> {
+    return this.http.get<SinglePostResponse>(
+      `${this.apiUrl}/posts/${postId}`,
+    );
   }
 
 }
