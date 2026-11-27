@@ -1,0 +1,66 @@
+<article class="relative flex h-dvh w-full flex-col overflow-hidden 
+           md:h-auto md:max-h-[80vh] md:max-w-md md:rounded-2xl md:border md:border-border md:shadow-2xl">
+
+    <section infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="150" [scrollWindow]="false"
+        [infiniteScrollDisabled]="nextPage() === null || isLoadingLikes() || !!likesError()" (scrolled)="loadLikes()"
+        class="min-h-0 flex-1 overflow-y-auto px-5 py-4">
+        @if (isLoadingLikes()) {
+        <section class="flex flex-col items-center justify-center gap-3 py-12">
+            <span class="size-8 animate-spin rounded-full border-4 border-primary/20 border-t-primary"></span>
+
+            <p class="text-sm text-text-secondary">
+                Loading loves...
+            </p>
+        </section>
+        }
+
+        @if (likesError()) {
+        <section class="flex flex-col items-center gap-3 py-8 text-center">
+            <i class="fa-solid fa-circle-exclamation text-3xl text-danger"></i>
+
+            <p class="text-sm text-danger">
+                {{ likesError() }}
+            </p>
+
+            <button type="button" (click)="loadLikes()" [disabled]="isLoadingLikes()"
+                class="rounded-button bg-primary px-5 py-2 text-sm font-medium text-white transition hover:bg-primary-hover disabled:opacity-50">
+                Try Again
+            </button>
+        </section>
+        }
+
+        @if (!isLoadingLikes() && !likesError() && nextPage() === null && users().length === 0) {
+        <section class="flex flex-col items-center justify-center gap-3 py-12 text-center">
+            <i class="fa-regular fa-heart text-4xl text-text-muted"></i>
+
+            <h3 class="font-medium text-text-primary">
+                No loves yet
+            </h3>
+
+            <p class="text-sm text-text-secondary">
+                Be the first one to love this post.
+            </p>
+        </section>
+        }
+
+        @if (users().length > 0) {
+        <ul class="flex flex-col gap-4">
+            @for (user of users(); track user._id) {
+            <li class="flex items-center gap-3">
+                <img [src]="user.photo" [alt]="user.name" class="size-11 shrink-0 rounded-full object-cover" />
+
+                <section class="min-w-0 flex-1">
+                    <h3 class="truncate text-sm font-semibold text-text-primary">
+                        {{ user.name }}
+                    </h3>
+
+                    <p class="truncate text-sm text-text-secondary">
+                        @{{ user.username }}
+                    </p>
+                </section>
+            </li>
+            }
+        </ul>
+        }
+    </section>
+</article>

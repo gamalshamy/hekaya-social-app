@@ -1,0 +1,81 @@
+<section class="fixed inset-0 z-1000 flex items-center justify-center bg-black/60 backdrop-blur-sm" (click)="close()">
+    <article class="flex h-dvh w-full flex-col overflow-hidden bg-surface
+           md:h-auto md:max-h-[80vh] md:max-w-md
+           md:rounded-2xl md:border md:border-border md:shadow-2xl" (click)="$event.stopPropagation()">
+
+        <header class="relative flex shrink-0 items-center justify-center border-b border-border px-5 py-4">
+            <h2 class="text-lg font-semibold text-text-primary">
+                {{ title() }}
+            </h2>
+
+            <button type="button" (click)="close()"
+                class="absolute right-4 flex size-9 items-center justify-center rounded-full text-text-secondary transition hover:bg-surface-secondary hover:text-text-primary">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+        </header>
+
+        <nav
+            class="flex shrink-0 items-center gap-3 border-b border-border/80 bg-linear-to-r from-surface-secondary/45 via-surface to-surface-secondary/35 px-4 py-2.5 sm:px-5">
+
+            <button type="button" (click)="toggleLike()"
+                class="flex size-10 shrink-0 items-center justify-center rounded-full transition hover:bg-surface-secondary"
+                [class.text-danger]="isLiked()" [class.text-text-secondary]="!isLiked()">
+                <i class="fa-heart text-xl" [class.fa-solid]="isLiked()" [class.fa-regular]="!isLiked()"></i>
+            </button>
+
+            <div
+                class="grid flex-1 grid-cols-2 gap-1.5 rounded-2xl border border-border/70 bg-surface-secondary/65 p-1">
+
+                <button type="button" (click)="selectSection('loves')"
+                    class="group/tab flex items-center justify-center gap-2 rounded-xl px-3 py-2 text-xs font-semibold transition-all duration-200 focus-visible:outline-none active:scale-[0.98] sm:text-sm"
+                    [class]="
+                            activeSection() === 'loves'
+                            ? 'border border-primary/20 bg-surface text-primary shadow-xs'
+                            : 'border border-transparent text-text-secondary hover:bg-surface/60 hover:text-text-primary'
+                        ">
+                    <span class="truncate">Loves</span>
+                    <span class="rounded-full px-2 py-0.5 text-[11px] font-bold tabular-nums transition-colors" [class]="
+                            activeSection() === 'loves'
+                                ? 'bg-primary-soft text-primary'
+                                : 'bg-surface/90 text-text-muted group-hover/tab:text-text-secondary'
+                            ">
+                        {{ likesCount() }}
+                    </span>
+                </button>
+
+                <button type="button" (click)="selectSection('comments')"
+                    class="group/tab flex items-center justify-center gap-2 rounded-xl px-3 py-2 text-xs font-semibold transition-all duration-200 focus-visible:outline-none active:scale-[0.98] sm:text-sm"
+                    [class]="
+                            activeSection() === 'comments'
+                            ? 'border border-primary/20 bg-surface text-primary shadow-xs'
+                            : 'border border-transparent text-text-secondary hover:bg-surface/60 hover:text-text-primary'
+                        ">
+                    <span class="truncate">Comments</span>
+                    <span class="rounded-full px-2 py-0.5 text-[11px] font-bold tabular-nums transition-colors" [class]="
+                            activeSection() === 'comments'
+                                ? 'bg-primary-soft text-primary'
+                                : 'bg-surface/90 text-text-muted group-hover/tab:text-text-secondary'
+                            ">
+                        {{ commentsCount() }}
+                    </span>
+                </button>
+
+            </div>
+
+        </nav>
+
+        <section class="flex-1 overflow-hidden bg-surface">
+            @if (activeSection() === 'loves') {
+            <app-post-likes [postId]="postId()" />
+            }
+
+            @if (activeSection() === 'comments') {
+            <section class="flex items-center justify-center py-12">
+                <p class="text-sm text-text-secondary">
+                    Comments section will be added next.
+                </p>
+            </section>
+            }
+        </section>
+    </article>
+</section>

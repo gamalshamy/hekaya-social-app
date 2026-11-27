@@ -135,10 +135,11 @@
                 </svg>
             </span>
 
-            <span class="font-medium tabular-nums">
+            <button type="button" (click)="openPostEngagement()"
+                class="text-xs text-text-muted transition-colors font-medium tabular-nums hover:text-primary">
                 {{ likeState().likesCount | number }}
                 {{ likeState().likesCount === 1 ? 'Love' : 'Loves' }}
-            </span>
+            </button>
         </div>
 
         <div class="flex shrink-0 items-center gap-3">
@@ -299,4 +300,9 @@
 
 @if (showShareDialog()) {
 <app-share-dialog [post]="post()" (closed)="closeShareDialog()" (shared)="onPostShared($event)" />
+}
+
+@if (showEngagement()) {
+<app-post-engagement-header [postId]="post()._id" [isLiked]="likeState().isLiked" [likesCount]="likeState().likesCount"
+    [commentsCount]="post().commentsCount" (likeToggled)="toggleLike()" (closed)="closePostEngagement()" />
 }

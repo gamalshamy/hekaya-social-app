@@ -3,13 +3,14 @@ import { Component, computed, inject, input, linkedSignal, OnDestroy, OnInit, ou
 import { AuthService } from '../../../auth/services/auth.service';
 import { Post } from '../../models/post.interface';
 import { PostsService } from '../../services/posts.service';
+import { PostEngagementHeaderComponent } from '../post-engagement-header/post-engagement-header.component';
+import { ShareDialogComponent } from '../share-dialog/share-dialog.component';
 import { SharedPostComponent } from '../shared-post/shared-post.component';
 import { TopCommentComponent } from '../top-comment/top-comment.component';
-import { ShareDialogComponent } from '../share-dialog/share-dialog.component';
 
 @Component({
   selector: 'app-post-card',
-  imports: [DatePipe, DecimalPipe, TopCommentComponent, SharedPostComponent, ShareDialogComponent],
+  imports: [DatePipe, DecimalPipe, TopCommentComponent, SharedPostComponent, ShareDialogComponent, PostEngagementHeaderComponent],
   templateUrl: './post-card.component.html',
   styleUrl: './post-card.component.css',
 })
@@ -56,6 +57,9 @@ export class PostCardComponent implements OnInit, OnDestroy {
   // share post
   readonly showShareDialog = signal(false);
   readonly postShared = output<Post>();
+
+  // to show [Loves & Comments]
+  readonly showEngagement = signal(false);
 
   // Current time
   readonly currentTime = signal(Date.now());
@@ -250,5 +254,13 @@ export class PostCardComponent implements OnInit, OnDestroy {
   onPostShared(sharedPost: Post): void {
     this.postShared.emit(sharedPost);
     this.showShareDialog.set(false);
+  }
+
+  openPostEngagement(): void {
+    this.showEngagement.set(true);
+  }
+
+  closePostEngagement(): void {
+    this.showEngagement.set(false);
   }
 }

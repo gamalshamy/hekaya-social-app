@@ -9,6 +9,7 @@ import { LikePostResponse } from '../models/like-post-response.interface';
 import { BookmarkPostResponse } from '../models/bookmark-post-response.interface';
 import { DeletePostResponse } from '../models/delete-post-response.interface';
 import { SharePostResponse } from '../models/share-post-user.interface';
+import { PostLikesResponse } from '../models/post-likes.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -26,8 +27,6 @@ export class PostsService {
   readonly postsError = this._postsError.asReadonly();
   readonly isCreatingPost = this._isCreatingPost.asReadonly();
   readonly createPostError = this._createPostError.asReadonly();
-
-
 
 
 
@@ -107,4 +106,28 @@ export class PostsService {
       { body },
     );
   }
+
+
+
+  getPostLikes(postId: string, page: number = 1, limit: number = 20): Observable<PostLikesResponse> {
+
+    const params = new HttpParams()
+      .set('page', page)
+      .set('limit', limit);
+
+    return this.http
+      .get<PostLikesResponse>(
+        `${this.apiUrl}/posts/${postId}/likes`,
+        { params },
+      )
+      .pipe(
+        catchError((error: HttpErrorResponse) => {
+          return throwError(() => ({
+            message: this.getErrorMessage(error),
+            originalError: error,
+          }));
+        }),
+      );
+  }
+
 }
