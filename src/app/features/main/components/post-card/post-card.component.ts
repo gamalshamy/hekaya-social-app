@@ -1,8 +1,10 @@
-import { Component, input, OnDestroy, OnInit, signal } from '@angular/core';
-import { Post } from '../../models/post.interface';
 import { DatePipe, DecimalPipe } from '@angular/common';
-import { TopCommentComponent } from '../top-comment/top-comment.component';
+import { Component, inject, input, linkedSignal, OnDestroy, OnInit, signal } from '@angular/core';
+import { AuthService } from '../../../auth/services/auth.service';
+import { Post } from '../../models/post.interface';
+import { PostsService } from '../../services/posts.service';
 import { SharedPostComponent } from '../shared-post/shared-post.component';
+import { TopCommentComponent } from '../top-comment/top-comment.component';
 
 @Component({
   selector: 'app-post-card',
@@ -12,6 +14,22 @@ import { SharedPostComponent } from '../shared-post/shared-post.component';
 })
 export class PostCardComponent implements OnInit, OnDestroy {
   readonly post = input.required<Post>();
+
+  private readonly authService = inject(AuthService);
+  private readonly postsService = inject(PostsService);
+
+  readonly isLiking = signal(false);
+  readonly likeError = signal<string | null>(null);
+
+  readonly likeState = linkedSignal(() => {
+    const post = this.post();
+    const userId = this.authService.getCurrentUserId();
+
+    return {
+      isLiked: !!userId && post.likes.includes(userId),
+      likesCount: post.likesCount,
+    };
+  });
 
   // Current time
   readonly currentTime = signal(Date.now());
@@ -52,5 +70,63 @@ export class PostCardComponent implements OnInit, OnDestroy {
     if (days < 30) return `${days}d`;
 
     return new DatePipe('en-US').transform(date, 'MMM d, y') ?? '';
+  }
+
+  toggleLike(): void {
+    if (this.isLiking()) {
+      return;
+    }
+
+    const userId = this.authService.getCurrentUserId();
+
+    if (!userId) {
+      this.likeError.set('Please sign in to like this post.');
+      return;
+    }
+
+    const post = this.post();
+    const previousState = this.likeState();
+
+    const nextLikedState = !previousState.isLiked;
+
+    this.likeState.set({
+      isLiked: nextLikedState,
+      likesCount: Math.max(
+        0,
+        previousState.likesCount + (nextLikedState ? 1 : -1),
+      ),
+    });
+
+    this.likeError.set(null);
+
+    if (!navigator.onLine) {
+      this.likeError.set('You are offline. Your reaction was not saved.');
+      return;
+    }
+
+    this.isLiking.set(true);
+
+    this.postsService.likePost(post._id).subscribe({
+      next: (response) => {
+        this.likeState.set({
+          isLiked: response.data.liked,
+          likesCount: response.data.likesCount,
+        });
+
+        this.isLiking.set(false);
+      },
+
+      error: (error) => {
+        this.likeState.set(previousState);
+
+        this.likeError.set(
+          error?.error?.message ||
+          error?.error?.errors ||
+          'Unable to update your reaction. Please try again.',
+        );
+
+        this.isLiking.set(false);
+      },
+    });
   }
 }

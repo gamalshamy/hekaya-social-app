@@ -5,6 +5,7 @@ import { environment } from '../../../../environments/environment';
 import { ApiError } from '../../../shared/models/api-error.interface';
 import { PostsResponse } from '../models/posts-response.interface';
 import { CreatePostResponse } from '../models/create-post-response.interface';
+import { LikePostResponse } from '../models/like-post-response.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -73,5 +74,12 @@ export class PostsService {
         }),
         finalize(() => this._isCreatingPost.set(false)),
       );
+  }
+
+  likePost(postId: string): Observable<LikePostResponse> {
+    return this.http.put<LikePostResponse>(
+      `${this.apiUrl}/posts/${postId}/like`,
+      null,
+    );
   }
 }
