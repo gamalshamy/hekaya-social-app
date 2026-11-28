@@ -1,6 +1,7 @@
-<section class="fixed inset-0 z-1000 flex items-center justify-center bg-black/60 backdrop-blur-sm" (click)="close()">
-    <article class="flex h-dvh w-full flex-col overflow-hidden bg-surface
-           md:h-auto md:max-h-[80vh] md:max-w-md
+<section class="fixed inset-0 z-1000 flex items-center justify-center bg-black/60 backdrop-blur-sm md:py-16"
+    (click)="close()">
+    <article class="flex h-full w-full flex-col overflow-hidden bg-surface
+           md:max-w-xl
            md:rounded-2xl md:border md:border-border md:shadow-2xl" (click)="$event.stopPropagation()">
 
         <header class="relative flex shrink-0 items-center justify-center border-b border-border px-5 py-4">
@@ -64,17 +65,13 @@
 
         </nav>
 
-        <section class="flex-1 overflow-hidden bg-surface">
+        <section class="flex-1 overflow-y-auto overflow-x-hidden h-full bg-surface">
             @if (title() === 'loves') {
             <app-post-likes [postId]="postId()" />
             }
 
             @if (title() === 'comments') {
-            <section class="flex items-center justify-center py-12">
-                <p class="text-sm text-text-secondary">
-                    Comments section will be added next.
-                </p>
-            </section>
+            <app-post-comments [postId]="postId()"></app-post-comments>
             }
         </section>
     </article>

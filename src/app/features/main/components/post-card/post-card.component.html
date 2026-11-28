@@ -243,7 +243,7 @@
     }
     <!-- Top Comment Preview -->
     @if (post().topComment; as comment) {
-    <app-top-comment [comment]="comment" [commentsCount]="post().commentsCount"></app-top-comment>
+    <app-top-comment [comment]="comment" [commentsCount]="post().commentsCount" [postId]="post()._id"></app-top-comment>
     }
 </article>
 

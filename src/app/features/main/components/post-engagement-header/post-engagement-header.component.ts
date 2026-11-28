@@ -1,9 +1,10 @@
 import { Component, computed, input, output, signal } from '@angular/core';
 import { PostLikesComponent } from '../post-likes/post-likes.component';
+import { PostCommentsComponent } from '../../comments/components/post-comments/post-comments.component';
 
 @Component({
   selector: 'app-post-engagement-header',
-  imports: [PostLikesComponent],
+  imports: [PostLikesComponent, PostCommentsComponent],
   templateUrl: './post-engagement-header.component.html',
   styleUrl: './post-engagement-header.component.css',
 })

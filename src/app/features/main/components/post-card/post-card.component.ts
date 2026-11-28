@@ -258,9 +258,9 @@ export class PostCardComponent implements OnInit, OnDestroy {
     this.showShareDialog.set(false);
   }
 
-  openPostEngagement(titdfle: string): void {
+  openPostEngagement(title: string): void {
     this.showEngagement.set(true);
-    this.engagementTitle.set(titdfle)
+    this.engagementTitle.set(title)
   }
 
   closePostEngagement(): void {

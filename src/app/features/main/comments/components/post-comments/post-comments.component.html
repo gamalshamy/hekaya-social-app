@@ -1,0 +1,123 @@
+<section infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="150" [scrollWindow]="false"
+    [infiniteScrollDisabled]="nextPage() === null || isLoadingComments() || !!commentsError()"
+    (scrolled)="loadComments()" class="h-full min-h-0 overflow-y-auto px-5 py-5">
+
+    @if (isLoadingComments() && comments().length === 0) {
+    <section class="flex flex-col items-center justify-center gap-3 py-12">
+        <span class="size-8 animate-spin rounded-full border-4 border-primary/20 border-t-primary"></span>
+
+        <p class="text-sm text-text-secondary">
+            Loading comments...
+        </p>
+    </section>
+    }
+
+    @if (commentsError()) {
+    <section class="flex flex-col items-center gap-3 py-8 text-center">
+        <i class="fa-solid fa-circle-exclamation text-3xl text-danger"></i>
+
+        <p class="text-sm text-danger">
+            {{ commentsError() }}
+        </p>
+
+        <button type="button" (click)="retry()" [disabled]="isLoadingComments()"
+            class="rounded-button bg-primary px-5 py-2 text-sm font-medium text-white transition hover:bg-primary-hover disabled:opacity-50">
+            Try Again
+        </button>
+    </section>
+    }
+
+    @if (!isLoadingComments() && !commentsError() && comments().length === 0 && nextPage() === null) {
+    <section class="flex flex-col items-center justify-center gap-3 py-12 text-center">
+        <i class="fa-regular fa-comments text-4xl text-text-muted"></i>
+
+        <h3 class="font-semibold text-text-primary">
+            No comments yet
+        </h3>
+
+        <p class="text-sm text-text-secondary">
+            Be the first to start a conversation.
+        </p>
+    </section>
+    }
+
+    @if (comments().length > 0) {
+    <ul class="flex flex-col gap-6">
+
+        @for (comment of comments(); track comment._id) {
+        <li class="flex items-start gap-3">
+            <img [src]="comment.commentCreator.photo" [alt]="comment.commentCreator.name"
+                class="size-10 shrink-0 rounded-full border border-border object-cover" />
+
+            <section class="min-w-0 flex-1">
+                <article class="inline-block w-full rounded-md bg-surface-secondary px-4 py-3">
+                    <header class="mb-1">
+                        <div class="flex flex-wrap  justify-between items-center">
+                            <h4 class="text-sm font-semibold text-text-primary">
+                                {{ comment.commentCreator.name }}
+                            </h4>
+
+                            <time [attr.datetime]="comment.createdAt" class="text-xs text-text-muted/70">
+                                {{ formatCommentDate(comment.createdAt) }}
+                            </time>
+                        </div>
+
+                        <p class="text-xs text-text-muted">
+                            @{{ comment.commentCreator.username }}
+                        </p>
+                    </header>
+
+                    @if (comment.content) {
+                    <p class="whitespace-pre-wrap break-words text-sm leading-relaxed text-text-primary">
+                        {{ comment.content }}
+                    </p>
+                    }
+
+                    @if (comment.image) {
+                    <img [src]="comment.image" alt="Comment attachment"
+                        class="mt-2 max-h-80 w-full rounded-xl object-contain" />
+                    }
+
+                </article>
+
+                <footer>
+                    <div class="mt-1 flex items-center gap-4 ms-5">
+                        <span
+                            class="text-xs font-medium text-text-muted cursor-pointer hover:underline hover:text-primary transition-all duration-100">
+                            @if (comment.likes.length === 0) {
+                            Love
+                            }
+                            @else if (comment.likes.length > 0){
+                            ({{ comment.likes.length }})
+                            {{ comment.likes.length === 1 ? 'Love' : 'Loves' }}
+                            }
+                        </span>
+
+                        <button
+                            class="text-xs font-medium text-text-muted cursor-pointer hover:underline hover:text-primary transition-all duration-100">
+                            @if (comment.repliesCount === 0) {
+                            Reply
+                            }
+                            @else if (comment.repliesCount > 0) {
+                            ({{ comment.repliesCount }})
+
+                            {{ comment.repliesCount === 1 ? 'Reply' : 'Replies' }}
+                            }
+                        </button>
+                    </div>
+                </footer>
+
+            </section>
+        </li>
+        }
+
+    </ul>
+    }
+
+    <!-- Loading More -->
+    @if (isLoadingComments() && comments().length > 0) {
+    <section class="flex justify-center py-5">
+        <span class="size-6 animate-spin rounded-full border-2 border-primary/20 border-t-primary"></span>
+    </section>
+    }
+</section>

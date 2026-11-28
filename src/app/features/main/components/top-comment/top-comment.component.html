@@ -43,13 +43,24 @@
             </div>
 
             @if (commentsCount() > 1) {
-            <button type="button"
+            <button type="button" (click)="openPostEngagement('comments')"
                 class="group mt-4 block ms-auto text-xs font-semibold text-text-muted transition-colors hover:text-primary">
 
+                @if (!showEngagement()){
                 View all {{ commentsCount() | number }} comments
-
+                }
+                @else {
+                hidden comments
+                }
             </button>
             }
         </div>
     </div>
 </section>
+
+
+@if (showEngagement()) {
+<article class="flex-1 overflow-y-auto overflow-x-hidden h-[80vh] bg-surface">
+    <app-post-comments [postId]="postId()"></app-post-comments>
+</article>
+}

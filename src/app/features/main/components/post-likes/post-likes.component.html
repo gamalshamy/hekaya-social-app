@@ -1,5 +1,5 @@
 <article class="relative flex h-dvh w-full flex-col overflow-hidden 
-           md:h-auto md:max-h-[80vh] md:max-w-md md:rounded-2xl md:border md:border-border md:shadow-2xl">
+           md:h-auto md:max-h-[80vh] md:max-w-md">
 
     <section infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="150" [scrollWindow]="false"
         [infiniteScrollDisabled]="nextPage() === null || isLoadingLikes() || !!likesError()" (scrolled)="loadLikes()"
