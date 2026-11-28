@@ -1,0 +1,49 @@
+<section class="border-t border-border bg-surface">
+
+    @if (commentError()) {
+    <section
+        class="mx-4 mt-3 flex items-start gap-2.5 rounded-sm border border-danger/20 bg-danger/10 px-3.5 py-2.5 text-xs font-medium text-danger">
+        <i class="fa-solid fa-circle-exclamation mt-0.5"></i>
+        <p class="min-w-0 flex-1 wrap-break-word">
+            {{ commentError() }}
+        </p>
+    </section>
+    }
+
+    @if (imagePreview()) {
+    <section class="px-4 pt-3">
+        <figure class="relative w-fit overflow-hidden rounded-xl border border-border bg-surface-secondary p-1">
+            <img [src]="imagePreview()!" alt="Selected comment image"
+                class="max-h-36 max-w-full rounded-lg object-contain" />
+
+            <button type="button" (click)="removeImage(imageInput)" title="Remove image"
+                class="absolute end-2 top-2 grid size-7 place-items-center rounded-full border border-border bg-surface/90 text-text-primary shadow-md backdrop-blur-sm transition hover:scale-105 hover:bg-danger hover:text-white hover:border-danger">
+                <i class="fa-solid fa-xmark text-xs"></i>
+            </button>
+        </figure>
+    </section>
+    }
+
+    <form (submit)="createComment($event, imageInput)" class="flex items-end gap-2.5 p-4">
+        <label title="Add image"
+            class="grid size-11 shrink-0 cursor-pointer place-items-center rounded-full text-text-secondary transition duration-200 hover:bg-primary-soft hover:text-primary active:scale-90"
+            [class.bg-primary-soft]="!!imagePreview()" [class.text-primary]="!!imagePreview()">
+            <i class="fa-regular fa-image text-xl"></i>
+            <input #imageInput type="file" accept="image/*" class="hidden" (change)="onImageSelected($event)" />
+        </label>
+
+        <textarea [value]="commentContent()" (input)="commentContent.set($any($event.target).value)"
+            placeholder="Write a comment..." rows="1" dir="auto"
+            class="field-sizing-content max-h-32 min-h-11 min-w-0 flex-1 resize-none rounded-3xl border border-border bg-surface-secondary/70 px-4 py-2.5 text-sm leading-6 text-text-primary outline-none transition duration-200 placeholder:text-text-muted focus:border-primary/50 focus:bg-surface focus:ring-4 focus:ring-primary/10"></textarea>
+
+        <button type="submit" [disabled]="isSubmitting() || (!commentContent().trim() && !selectedImage())"
+            title="Post comment"
+            class="grid size-8 shrink-0 place-items-center rounded-full bg-primary text-white transition duration-200 hover:bg-primary-hover active:scale-90 disabled:cursor-not-allowed disabled:bg-surface-secondary disabled:text-text-muted ">
+            @if (isSubmitting()) {
+            <span class="size-3 animate-spin rounded-full border-2 border-white/30 border-t-white"></span>
+            } @else {
+            <i class="fa-solid fa-paper-plane text-[.75rem]"></i>
+            }
+        </button>
+    </form>
+</section>

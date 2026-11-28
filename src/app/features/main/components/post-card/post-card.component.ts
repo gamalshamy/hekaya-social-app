@@ -8,10 +8,11 @@ import { ShareDialogComponent } from '../share-dialog/share-dialog.component';
 import { SharedPostComponent } from '../shared-post/shared-post.component';
 import { TopCommentComponent } from '../top-comment/top-comment.component';
 import { RouterLink } from '@angular/router';
+import { CreateCommentComponent } from '../../comments/components/create-comment/create-comment.component';
 
 @Component({
   selector: 'app-post-card',
-  imports: [DatePipe, DecimalPipe, TopCommentComponent, SharedPostComponent, ShareDialogComponent, PostEngagementHeaderComponent, RouterLink],
+  imports: [DatePipe, DecimalPipe, TopCommentComponent, SharedPostComponent, ShareDialogComponent, PostEngagementHeaderComponent, RouterLink, CreateCommentComponent],
   templateUrl: './post-card.component.html',
   styleUrl: './post-card.component.css',
 })
@@ -22,6 +23,8 @@ export class PostCardComponent implements OnInit, OnDestroy {
   private readonly postsService = inject(PostsService);
 
   readonly actionError = signal<string | null>(null);
+  readonly showCommentInput = signal(false);
+
 
   readonly isLiking = signal(false);
   // readonly likeError = signal<string | null>(null);
@@ -243,6 +246,10 @@ export class PostCardComponent implements OnInit, OnDestroy {
         );
       },
     });
+  }
+
+  toggelCommentInput() {
+    this.showCommentInput.set(!this.showCommentInput());
   }
 
   openShareDialog(): void {

@@ -3,10 +3,12 @@ import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
 import { finalize } from 'rxjs';
 import { PostComment } from '../../models/comments-response.interface';
 import { CommentsService } from '../../services/comments.service';
+import { CreateCommentResponse } from '../../models/create-comment-response.interface';
+import { CreateCommentComponent } from '../create-comment/create-comment.component';
 
 @Component({
   selector: 'app-post-comments',
-  imports: [InfiniteScrollDirective],
+  imports: [InfiniteScrollDirective, CreateCommentComponent],
   templateUrl: './post-comments.component.html',
   styleUrl: './post-comments.component.css',
 })
@@ -141,5 +143,16 @@ export class PostCommentsComponent implements OnInit, OnDestroy {
 
   retry(): void {
     this.loadComments();
+  }
+
+  onCommentCreated(
+    comment: CreateCommentResponse['data']['comment'],
+  ): void {
+    this.comments.update((currentComments) => [
+      { ...comment, repliesCount: 0 },
+      ...currentComments,
+    ]);
+
+    this.totalComments.update((total) => total + 1);
   }
 }

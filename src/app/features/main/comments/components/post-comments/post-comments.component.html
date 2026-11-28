@@ -1,6 +1,10 @@
 <section infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="150" [scrollWindow]="false"
     [infiniteScrollDisabled]="nextPage() === null || isLoadingComments() || !!commentsError()"
-    (scrolled)="loadComments()" class="h-full min-h-0 overflow-y-auto px-5 py-5">
+    (scrolled)="loadComments()" class="h-full min-h-0 overflow-y-auto px-5 pb-5">
+
+    <div class="sticky top-0">
+        <app-create-comment [postId]="postId()" (commentCreated)="onCommentCreated($event)" />
+    </div>
 
     @if (isLoadingComments() && comments().length === 0) {
     <section class="flex flex-col items-center justify-center gap-3 py-12">

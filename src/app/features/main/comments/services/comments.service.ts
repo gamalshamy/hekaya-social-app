@@ -3,6 +3,7 @@ import { inject, Injectable } from '@angular/core';
 import { environment } from '../../../../../environments/environment';
 import { Observable } from 'rxjs';
 import { CommentsResponse } from '../models/comments-response.interface';
+import { CreateCommentResponse } from '../models/create-comment-response.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -23,6 +24,24 @@ export class CommentsService {
     return this.http.get<CommentsResponse>(
       `${this.apiUrl}/posts/${postId}/comments`,
       { params },
+    );
+  }
+
+  // Create Comment
+  createComment(postId: string, content?: string, image?: File | null): Observable<CreateCommentResponse> {
+    const formData = new FormData();
+
+    if (content?.trim()) {
+      formData.append('content', content.trim());
+    }
+
+    if (image) {
+      formData.append('image', image);
+    }
+
+    return this.http.post<CreateCommentResponse>(
+      `${this.apiUrl}/posts/${postId}/comments`,
+      formData,
     );
   }
 }
